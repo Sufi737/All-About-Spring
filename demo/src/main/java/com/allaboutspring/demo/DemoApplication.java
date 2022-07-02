@@ -3,14 +3,14 @@ package com.allaboutspring.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
 
+import com.allaboutspring.demo.autowiring.UsingPrimary;
+import com.allaboutspring.demo.autowiring.UsingQualifier;
 import com.allaboutspring.demo.beanscope.PrototypeScope;
 import com.allaboutspring.demo.beanscope.SingletonScope;
-import com.allaboutspring.demo.di.ThirdPartyImplementation;
-import com.allaboutspring.demo.di.ThirdPartyInterface;
 import com.allaboutspring.demo.di.UsesDependencies;
+import com.allaboutspring.demo.profiles.BeanForLocal;
 
 //footnote 1
 @SpringBootApplication(scanBasePackages = "com.allaboutspring")
@@ -23,7 +23,7 @@ public class DemoApplication {
 		obj.useProvider();
 		obj.useThirdParty();
 		
-		//demonstrating bean scopes (see footnote 4)
+		//demonstrating bean scopes (see footnote 3)
 		SingletonScope singleton1 = context.getBean(SingletonScope.class);
 		SingletonScope singleton2 = context.getBean(SingletonScope.class);
 		System.out.println("Singleton scope both objects are same: "+(singleton1 == singleton2));
@@ -32,16 +32,21 @@ public class DemoApplication {
 		PrototypeScope prototype2 = context.getBean(PrototypeScope.class);
 		System.out.println("Prototype scope both objects are same: "+(prototype1 == prototype2));
 		
-		//shutting down application context
-		((ConfigurableApplicationContext) context).close();
+		//to demo autowiring with qualifier and primary
+		UsingQualifier usingQualifier = context.getBean(UsingQualifier.class);
+		usingQualifier.useBean();
+		UsingPrimary usingPrimary = context.getBean(UsingPrimary.class);
+		usingPrimary.useBean();
+		
+		//to demo profiles
+		BeanForLocal localBean = context.getBean(BeanForLocal.class);
+		localBean.print();
+		
+		//shutting down application context (footnote 4)
+//		((ConfigurableApplicationContext) context).close();
+		((AbstractApplicationContext) context).registerShutdownHook(); //more preferred way
+		System.exit(0);
 	}
-	
-	//footnote 3
-	@Bean
-	public ThirdPartyInterface returnThirdParty() {
-		return new ThirdPartyImplementation();
-	}
-
 }
 
 /* Footnotes below
@@ -82,12 +87,12 @@ public class DemoApplication {
 
 
 /* 3
- * We have a special method here annotated with @Bean
- * This is used to register our class ThirdPartyImplementation as a bean as it is not annotated with @Component (which is the case for third party classes)
- * In this way we can register classes not developed by us as beans!
- */
-
-/*4
  * Here prototype scope bean will return new instance everytime new bean is fetched and hence both the objects are not equal
  * Singleton scope beans will be returned with the same instance everytime bean is fetched or dependency is specified
+ */
+
+
+/* 4
+ * There are two methods as written above to close application context. 
+ * registerShutdownHook() is more preferred but it will wait till JVM is destroyed which is why using System.exit(0)
  */

@@ -5,12 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import com.allaboutspring.demo.aop.DemoClass;
 import com.allaboutspring.demo.autowiring.UsingPrimary;
 import com.allaboutspring.demo.autowiring.UsingQualifier;
 import com.allaboutspring.demo.beanscope.PrototypeScope;
 import com.allaboutspring.demo.beanscope.SingletonScope;
 import com.allaboutspring.demo.di.UsesDependencies;
 import com.allaboutspring.demo.profiles.BeanForLocal;
+import com.allaboutspring.demo.spel.UsingValueWithSpel;
 
 //footnote 1
 @SpringBootApplication(scanBasePackages = "com.allaboutspring")
@@ -41,6 +43,17 @@ public class DemoApplication {
 		//to demo profiles
 		BeanForLocal localBean = context.getBean(BeanForLocal.class);
 		localBean.print();
+		
+		//to demo @Value annotation with SPEL
+		UsingValueWithSpel spelBean = context.getBean(UsingValueWithSpel.class);
+		spelBean.printValues();
+		
+		//to demo AOP
+		DemoClass aopDemoObj = context.getBean(DemoClass.class);
+		aopDemoObj.printMessage();
+		aopDemoObj.returnsSomething();
+		aopDemoObj.originalMethod(100);
+		aopDemoObj.originalMethod(30);
 		
 		//shutting down application context (footnote 4)
 //		((ConfigurableApplicationContext) context).close();

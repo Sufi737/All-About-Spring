@@ -66,6 +66,9 @@ For example, transaction managemenet is done across multiple methods and can be 
 
 Then there are annotations which help us define a "Pointcut". A pointcut is a point during the execution, which in our case,
 are before, after and so one. We have a @Pointcut annotation, which takes in a pointcut expression. 
+In other words, we use pointcut expressions to define at which "joinpoints" we want our "advice" to be executed
+So pointcut means the specific points in the application where we can execute our concerns
+And advice means a specific action we want to execute at those joinpoints
 Here, the method name anyPrintMessage is our pointcut
 
 In the pointcut expression we are using "executing" which is a pointcut designator. There are other designators supported in spring
@@ -80,5 +83,7 @@ Then we are annotations such as @Before which are called as advices
 @Around - called both for before method is invoked and also after method is executed. This allows complete modification of behaviour
 	We can also skip the original method call by not calling proceed()
 
+Weaving - Spring links the aspects to target code and creates a new proxy object (called as advised object). 
+This process of linking aspects to target is called weaving
 
 */

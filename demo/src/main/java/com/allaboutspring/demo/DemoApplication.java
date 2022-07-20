@@ -57,8 +57,9 @@ public class DemoApplication {
 		
 		//shutting down application context (footnote 4)
 //		((ConfigurableApplicationContext) context).close();
-		((AbstractApplicationContext) context).registerShutdownHook(); //more preferred way
-		System.exit(0);
+		//commented out below to run controllers and rest
+//		((AbstractApplicationContext) context).registerShutdownHook(); //more preferred way
+//		System.exit(0);
 	}
 }
 

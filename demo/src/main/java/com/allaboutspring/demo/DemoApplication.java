@@ -3,7 +3,7 @@ package com.allaboutspring.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.allaboutspring.demo.aop.DemoClass;
 import com.allaboutspring.demo.autowiring.UsingPrimary;
@@ -16,6 +16,7 @@ import com.allaboutspring.demo.spel.UsingValueWithSpel;
 
 //footnote 1
 @SpringBootApplication(scanBasePackages = "com.allaboutspring")
+@EnableJpaRepositories
 public class DemoApplication {
 
 	public static void main(String[] args) {

@@ -76,4 +76,6 @@ implements ApplicationContextAware, BeanNameAware, BeanFactoryAware, Initializin
 * Note: Even when we are not using this bean. You will see this bean to be initialized because 
 * the IoC container pre-initializes all singleton beans at startup
 * We can set them up to load lazily or make thier scope prototype
+* 
+* We can use @Lazy annotation above configuration class so that all beans defined using @Bean will load lazily
 */
